@@ -104,6 +104,8 @@ def main():
         key = cv.waitKey(10)
         if key == 27: #ESC
             break
+        #elif cv.getWindowProperty('Hand Gesture Recognition', cv.WND_PROP_VISIBLE) < 1:
+        #    break
         number, mode = select_mode(key, mode)
 
     
@@ -304,6 +306,10 @@ def logging_csv(number, mode, landmark_list, point_history_list):
             writer.writerow([number, *point_history_list])
     return
     
+
+#====================================================================================================================
+#Drawing the hand landmarks and lines
+#====================================================================================================================
 def draw_landmarks(image, landmark_point):
     if len(landmark_point) > 0:
         #Thumb
@@ -357,9 +363,11 @@ def draw_landmarks(image, landmark_point):
         cv.line(image, tuple(landmark_point[9]), tuple(landmark_point[13]), (255, 255, 255), 2)
         cv.line(image, tuple(landmark_point[13]), tuple(landmark_point[17]), (0, 0, 0), 6)
         cv.line(image, tuple(landmark_point[13]), tuple(landmark_point[17]), (255, 255, 255), 2)
+        cv.line(image, tuple(landmark_point[0]), tuple(landmark_point[17]), (0, 0, 0), 6)
+        cv.line(image, tuple(landmark_point[0]), tuple(landmark_point[17]), (255, 255, 255), 2)
 
 
-    #Key points
+    #Key points (joints, ends of fingers)
     for index, landmark in enumerate(landmark_point):
         if index == 0:
             cv.circle(image, (landmark[0], landmark[1]), 5, (255, 255, 255), -1)
