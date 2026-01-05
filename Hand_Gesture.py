@@ -53,7 +53,7 @@ def main():
     use_brect = True
 
     #=========================================================================
-    #Camera Prep
+    #Camera Prep 
     #=========================================================================
     cap = cv.VideoCapture(cap_device)
     cap.set(cv.CAP_PROP_FRAME_WIDTH, cap_width)
@@ -101,7 +101,7 @@ def main():
 
 
         #Process key (ESC : end) ==============================================
-        key = cv.waitKey(10)
+        key = cv.waitKey(10)#Acts as a type of delay between frame captures
         if key == 27: #ESC
             break
         #elif cv.getWindowProperty('Hand Gesture Recognition', cv.WND_PROP_VISIBLE) < 1:
@@ -112,7 +112,7 @@ def main():
         #=========================================================================
         #Camera Capture
         #=========================================================================
-        ret, image = cap.read()
+        ret, image = cap.read()#grabbing frames
         if not ret:
             break
 
@@ -127,7 +127,7 @@ def main():
         image = cv.cvtColor(image, cv.COLOR_BGR2RGB)
 
         image.flags.writeable = False
-        results = hands.process(image)
+        results = hands.process(image)#Returns hand landmarks
         image.flags.writeable = True
 
 
@@ -142,9 +142,14 @@ def main():
 
 
                 #Landmark calculation
-                landmark_list = calc_landmark_list(debug_image, hand_landmarks)
+                landmark_list = calc_landmark_list(debug_image, hand_landmarks)#2D List
 
-                #print(landmark_list[0])
+                #=====================================
+                #printing landmark pixle co-ordinates
+                #=====================================
+
+                #print(landmark_list)#Printing the pixle co-ordinates
+                #print(landmark_list[0])#Printing the Wrists pixle co-ordinate
 
                 #Conversion to normalized co-ordinates
                 pre_processed_landmark_list = pre_process_landmark(landmark_list)
@@ -258,8 +263,12 @@ def pre_process_landmark(landmark_list):
     #convert to a one dimensional list
     temp_landmark_list = list(itertools.chain.from_iterable(temp_landmark_list))
 
-    #Normalization
-    max_value = max(list(map(abs, temp_landmark_list)))
+    #Normalization [-1, 2, 3] --> [1, 2, 3]
+    max_value = max(list(map(abs, temp_landmark_list))) #The x or y value that is 
+                                                        #furthest away from the base
+                                                        # value eg. distance from tip
+                                                        # of middle finger to the wrist
+                                                        # point. 
             
     #print("MV", max_value)
 
