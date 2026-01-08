@@ -160,7 +160,7 @@ def main():
                 #Write to the dataset file
                 logging_csv(number, mode, pre_processed_landmark_list, pre_processed_point_history_list)
 
-                #Hand sign classification
+                #Hand sign classification and pointer drawing
                 hand_sign_id = keyPoint_classifier(pre_processed_landmark_list)
                 if hand_sign_id == 2: #point gesture
                     point_history.append(landmark_list[8])
